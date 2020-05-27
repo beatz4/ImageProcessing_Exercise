@@ -15,14 +15,28 @@ using namespace std;
 
 #define SCALE 2.0
 
+// 히스토그래 평활화
+void ShowEqualizeHist(string imgPath);
+
+// 히스토그램 역투영
+void ShowBackProject(string imgPath);
+
 int main()
 {
 	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/20200324_140354_TestImage.png";
+	ShowBackProject(strFile);
+	
+	return 0;
 
+	//std::cout << "Hello World!\n"; 
+}
+
+void ShowEqualizeHist(string imgPath) 
+{
 	Mat inputImage;
 	Mat greyImage;
 
-	inputImage = imread(strFile);
+	inputImage = imread(imgPath);
 
 	resize(inputImage, inputImage, Size(), SCALE, SCALE, INTER_AREA);
 
@@ -67,9 +81,38 @@ int main()
 	imshow("EqualizeHist", dst);
 
 	waitKey(0);
-	return 0;
+}
 
-	//std::cout << "Hello World!\n"; 
+void ShowBackProject(string imgPath)
+{
+	Mat ref, ref_ycrcb;
+	ref = imread(imgPath);
+	cvtColor(ref, ref_ycrcb, cv::COLOR_BGR2YCrCb);
+
+	// 영상 히스토그램
+	Mat hist;
+	int channels[] = { 1, 2 };
+	int cr_bins = 128;
+	int cb_bins = 128;
+	int histSize[] = { cr_bins, cb_bins };
+	float cr_range[] = { 0, 256 };
+	float cb_range[] = { 0, 256 };
+	const float* ranges[] = { cr_range, cb_range };
+
+	// 영상 히스토그램
+	calcHist(&ref_ycrcb, 1, channels, Mat(), hist, 2, histSize, ranges);
+
+	Mat src, src_ycrcb;
+	src = imread(imgPath);
+	cvtColor(src, src_ycrcb, cv::COLOR_BGR2YCrCb);
+
+	Mat backproj;
+	// 역투영
+	calcBackProject(&src_ycrcb, 1, channels, hist, backproj, ranges, 1, true);
+
+	imshow("src", src);
+	imshow("backproj", backproj);
+	waitKey(0);
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
