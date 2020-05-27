@@ -15,23 +15,20 @@ using namespace std;
 
 #define SCALE 2.0
 
-IplImage* DrawHistogram(CvHistogram *hist, float scaleX = 1, float scaleY = 1);
-void CreateHistogram(IplImage *img, const string &name);
-
 int main()
 {
-	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/test5.bmp";
+	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/20200324_140354_TestImage.png";
 
 	Mat inputImage;
 	Mat greyImage;
-	
+
 	inputImage = imread(strFile);
 
 	resize(inputImage, inputImage, Size(), SCALE, SCALE, INTER_AREA);
-	
+
 	// input image를 gray로 변환
 	cvtColor(inputImage, greyImage, cv::COLOR_BGR2GRAY);
-	
+
 	MatND histogram;
 	const int* channel_numbers = { 0 };
 	float channel_range[] = { 0.0, 255.0 };
@@ -53,23 +50,26 @@ int main()
 			Scalar(255, 0, 0), 2, 8, 0);
 	}
 
+	// 평활화
+	Mat dst;
+	equalizeHist(greyImage, dst);
+
 	namedWindow("Original", WINDOW_AUTOSIZE);
 	namedWindow("Histogram", WINDOW_AUTOSIZE);
+	namedWindow("EqualizeHist", WINDOW_AUTOSIZE);
 
 	moveWindow("Original", 100, 100);
 	moveWindow("Histogram", 120, 120);
+	moveWindow("EqualizeHist", 140, 140);
 
 	imshow("Original", greyImage);
 	imshow("Histogram", histImage);
+	imshow("EqualizeHist", dst);
 
 	waitKey(0);
 	return 0;
 
-
-	/*imshow("tenp", matImage);
-	waitKey();*/
-
-    //std::cout << "Hello World!\n"; 
+	//std::cout << "Hello World!\n"; 
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
