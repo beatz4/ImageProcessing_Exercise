@@ -23,7 +23,7 @@ void ShowBackProject(string imgPath);
 
 int main()
 {
-	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/20200324_140354_TestImage.png";
+	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/37.png";
 	ShowBackProject(strFile);
 	
 	return 0;
@@ -109,6 +109,12 @@ void ShowBackProject(string imgPath)
 	Mat backproj;
 	// 역투영
 	calcBackProject(&src_ycrcb, 1, channels, hist, backproj, ranges, 1, true);
+
+	namedWindow("src", WINDOW_AUTOSIZE);
+	namedWindow("backproj", WINDOW_AUTOSIZE);
+
+	moveWindow("src", 100, 100);
+	moveWindow("backproj", 120, 120);
 
 	imshow("src", src);
 	imshow("backproj", backproj);
