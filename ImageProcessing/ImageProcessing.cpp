@@ -21,11 +21,16 @@ void ShowEqualizeHist(string imgPath);
 // 히스토그램 역투영
 void ShowBackProject(string imgPath);
 
+// 이진화
+void ShowBinarization(string imgPath, double threadhold, int type);
+
 int main()
 {
-	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/37.png";
-	ShowBackProject(strFile);
-	
+	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/test11.png";
+	// ShowEqualizeHist(strFile);
+	// ShowBackProject(strFile);
+	ShowBinarization(strFile, 0., THRESH_BINARY | THRESH_OTSU);
+
 	return 0;
 
 	//std::cout << "Hello World!\n"; 
@@ -118,6 +123,16 @@ void ShowBackProject(string imgPath)
 
 	imshow("src", src);
 	imshow("backproj", backproj);
+	waitKey(0);
+}
+ 
+void ShowBinarization(string imgPath, double dThreadhold, int type)
+{
+	Mat image, maskBlackImage;
+	image = imread(imgPath, IMREAD_GRAYSCALE);
+
+	threshold(image, maskBlackImage, dThreadhold, 255, type);
+	imshow("Binarization", maskBlackImage);
 	waitKey(0);
 }
 
