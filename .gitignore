@@ -21,6 +21,8 @@ bin/
 *.suo
 *.log
 *.tlog
+*.idb
+*.pdb
 build
 node_modules
 CMakeSettings.json
