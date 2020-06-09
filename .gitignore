@@ -18,11 +18,10 @@ bin/
 *.rule
 *.tmp
 */debug
+*/x64/Debug
 *.suo
 *.log
 *.tlog
-*.idb
-*.pdb
 build
 node_modules
 CMakeSettings.json
