@@ -24,16 +24,45 @@ void ShowBackProject(string imgPath);
 // 이진화
 void ShowBinarization(string imgPath, double threadhold, int type);
 
+// 캐니 에지
+void CannyEdge(string imgPath, int lowThreshold = 200, int highThreshold = 255);
+
 int main()
 {
-	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/test11.png";
+	string strFile = "C:/Users/user/Documents/imageProcessing/exercise/test.png";
+
+	if (strFile.empty())
+		return -1;
+
 	// ShowEqualizeHist(strFile);
 	// ShowBackProject(strFile);
-	ShowBinarization(strFile, 0., THRESH_BINARY | THRESH_OTSU);
+	// ShowBinarization(strFile, 0., THRESH_BINARY | THRESH_OTSU);
+	CannyEdge(strFile);
 
 	return 0;
 
 	//std::cout << "Hello World!\n"; 
+}
+
+void CannyEdge(string imgPath, int lowThreshold, int highThreshold)
+{
+	Mat src_gray, src;
+	Mat detected_edges;
+
+	src = imread(imgPath, IMREAD_COLOR); // Load an image
+	if (src.empty())
+	{
+		return;
+	}
+
+	cvtColor(src, src_gray, COLOR_BGR2GRAY);
+	blur(src_gray, detected_edges, Size(3, 3));
+	Canny(detected_edges, detected_edges, lowThreshold, highThreshold, 3);
+
+	namedWindow("Canny Edge", WINDOW_AUTOSIZE);
+	imshow("Canny Edge", detected_edges);
+
+	waitKey(0);
 }
 
 void ShowEqualizeHist(string imgPath) 
